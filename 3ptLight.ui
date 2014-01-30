@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>kb_3ptlighting</class>
+ <widget class="QMainWindow" name="kb_3ptlighting">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>471</width>
+    <height>314</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Three Point Lighting</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>291</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Create 3-pt Lighting</string>
+    </property>
+    <property name="+command" stdset="0">
+     <string>KB_3PtLightWin.use.createBtnCmd</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="intensitySlider">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>80</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>1</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="tickPosition">
+     <enum>QSlider::TicksBelow</enum>
+    </property>
+    <property name="tickInterval">
+     <number>25</number>
+    </property>
+    <property name="+command" stdset="0">
+     <string>KB_3PtLightWin.use.setIntensityCmd</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>20</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update</string>
+    </property>
+    <property name="+command" stdset="0">
+     <string>KB_3PtLightWin.use.setIntensityCmd</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>150</y>
+      <width>121</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="text">
+        <string>Add Shadows</string>
+       </property>
+       <property name="+command" stdset="0">
+        <string>KB_3PtLightWin.use.shadowsBtnCmd</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Soften Shadows</string>
+       </property>
+       <property name="+command" stdset="0">
+        <string>KB_3PtLightWin.use.softBtnCmd</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Features: </string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="adjustLightBtn">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>110</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Look Through Next Light</string>
+    </property>
+    <property name="+command" stdset="0">
+     <string>KB_3PtLightWin.use.adjustLights</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>240</y>
+      <width>431</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="loadSetupBtn">
+       <property name="text">
+        <string>Load Setup</string>
+       </property>
+       <property name="+command" stdset="0">
+        <string>KB_3PtLightWin.use.loadBtnCmd</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveSetupBtn">
+       <property name="text">
+        <string>Save Setup</string>
+       </property>
+       <property name="+command" stdset="0">
+        <string>KB_3PtLightWin.use.saveBtnCmd</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>91</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Customize:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Global Intensity: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Adjust Lights:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>20</y>
+      <width>101</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Pictures/3pointLight_logo.jpg</pixmap>
+    </property>
+   </widget>
+   <zorder>pushButton_2</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>intensitySlider</zorder>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>adjustLightBtn</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>verticalLayoutWidget</zorder>
+   <zorder>label_4</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>471</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionSave_Setup"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoad_Setup"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+   </widget>
+   <addaction name="menuOptions"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSave_Setup">
+   <property name="text">
+    <string>Save Setup</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Lighting Setup</string>
+   </property>
+   <property name="+command" stdset="0">
+    <string>KB_3PtLightWin.use.saveBtnCmd</string>
+   </property>
+  </action>
+  <action name="actionLoad_Setup">
+   <property name="text">
+    <string>Load Setup</string>
+   </property>
+   <property name="+command" stdset="0">
+    <string>KB_3PtLightWin.use.loadBtnCmd</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="3ptIcon.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>intensitySlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>pushButton_2</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>65</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoad_Setup</sender>
+   <signal>triggered()</signal>
+   <receiver>loadSetupBtn</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave_Setup</sender>
+   <signal>triggered()</signal>
+   <receiver>saveSetupBtn</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

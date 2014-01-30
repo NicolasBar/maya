@@ -16,7 +16,8 @@ class KB_3PtLightWin(object):
     """A class for a window that helps create a default 3 point lighting setup"""
     ## reference to the most recent instance
     use = None
-    lights = [];
+    lights = []
+    currentLight = "keyLightShape"
 
     @classmethod
     def showUI(cls, uiFile):
@@ -70,17 +71,17 @@ class KB_3PtLightWin(object):
         self.findLightAngle('keyLight');
         self.findLightAngle('fillLight');
         self.findLightAngle('backLight');
-        cmds.select('backLight'); #hack
+        #flip backlight back towards the origin
+        cmds.select('backLight');
         cmds.rotate(180, y=1, r=1, os=1);
         cmds.group('keyLight', 'fillLight', 'backLight', n='Three_Point_Lights');
 
     def softBtnCmd(self, *args):
-        print("softBtnCmd was indeed called you swine");
         for l in self.lights:
             #cmds.spotLight(l,e=1, penumbra= -5);
-            cmds.setAttr('%s.penumbraAngle' % l, 4);
-            cmds.setAttr('%s.shadowRays' % l, 4);
-            cmds.setAttr('%s.lightRadius' % l, .25);
+            cmds.setAttr('%s.penumbraAngle' % l, 4)
+            cmds.setAttr('%s.shadowRays' % l, 4)
+            cmds.setAttr('%s.lightRadius' % l, .25)
 
     def shadowsBtnCmd(self, *args):
         for l in self.lights:
@@ -93,7 +94,7 @@ class KB_3PtLightWin(object):
             ctrlPath = '|'.join(
                 [self.window, 'centralwidget', self.intensitySlider]
             )
-            intensity = .01 * float(
+            intensity = .02 * float(
                 cmds.intSlider(ctrlPath, q=True, value=True)
             )
         except:
@@ -168,6 +169,21 @@ class KB_3PtLightWin(object):
         if isinstance(filePath, list): filePath = filePath[0]
         importSetup(filePath)
 
+    def adjustLights(self, *args):
+        #Look through a light for easy adjustment
+        print("adjustLights called\n")
+        for l in self.lights:
+            if l == self.currentLight:
+                lxform = cmds.listRelatives(l, p=1)
+                print("looking thru: " + lxform[0])
+                cmds.lookThru("modelPanel4", lxform[0],  nc=.001, fc=1000)
+        if self.currentLight == "keyLightShape":
+            self.currentLight = "fillLightShape"
+        elif self.currentLight == "fillLightShape":
+            self.currentLight = "backLightShape"
+        else:
+            self.currentLight = "keyLightShape"
+
 
 '''The following functions deal with exporting and importing saved Light Setups'''
 
@@ -221,12 +237,12 @@ def importSetup(filePath):
                 errAttrs.append(attrValue[0])
             except:
                 errAttrs.append(attrValue)
-        # display error message if needed
+                # display error message if needed
     if len(errAttrs) > 0:
         importErrorWindow(errAttrs)
         sys.stderr.write('Not all attributes could be loaded.')
 
-#create window when script is called
+#create window when script is run
 win = KB_3PtLightWin(
     os.path.join(os.getenv('HOME'), '3ptLight.ui'));
 win.create(verbose=True);
