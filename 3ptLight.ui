@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>314</height>
+    <width>484</width>
+    <height>328</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -89,7 +89,7 @@
       <x>20</x>
       <y>150</y>
       <width>121</width>
-      <height>81</height>
+      <height>88</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -175,7 +175,7 @@
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>91</width>
+      <width>98</width>
       <height>81</height>
      </rect>
     </property>
@@ -219,6 +219,23 @@
      <pixmap>../../../Pictures/3pointLight_logo.jpg</pixmap>
     </property>
    </widget>
+   <widget class="QPushButton" name="help_Button">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>20</y>
+      <width>99</width>
+      <height>99</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Help</string>
+    </property>
+    <property name="+command" stdset="0">
+     <string>KB_3PtLightWin.use.helpBtnCmd</string>
+    </property>
+   </widget>
+   <zorder>help_Button</zorder>
    <zorder>pushButton_2</zorder>
    <zorder>pushButton</zorder>
    <zorder>intensitySlider</zorder>
@@ -233,8 +250,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>471</width>
-     <height>18</height>
+     <width>484</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptions">
@@ -276,7 +293,18 @@
   </action>
   <action name="actionHelp">
    <property name="text">
+    <string>Launch Help</string>
+   </property>
+   <property name="+command" stdset="0">
+    <string>KB_3PtLightWin.use.saveBtnCmd</string>
+   </property>
+  </action>
+  <action name="actionHelp_2">
+   <property name="text">
     <string>Help</string>
+   </property>
+   <property name="+command" stdset="0">
+    <string>KB_3PtLightWin.use.helpBtnCmd</string>
    </property>
   </action>
  </widget>
@@ -329,6 +357,22 @@
     <hint type="destinationlabel">
      <x>390</x>
      <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelp</sender>
+   <signal>triggered()</signal>
+   <receiver>help_Button</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>

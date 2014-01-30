@@ -1,7 +1,7 @@
 '''
 Created on Oct 14, 2013
 
-@author: Nicolas
+@author: Nicolas Kendall-Bar
 '''
 
 import maya.cmds as cmds
@@ -51,16 +51,7 @@ class KB_3PtLightWin(object):
 
     def createBtnCmd(self, *args):
         """Function to execute when Create button is pressed"""
-        rotation = None
-        # obtain input as a float
-        '''try:
-            ctrlPath = '|'.join(
-                [self.window, 'centralwidget', self.rotField]
-            )
-            rotation = float(
-                cmds.textField(ctrlPath, q=True, text=True)
-            )
-        except: raise'''
+
         # create 3 lights and place them in the right location
         self.lights.append(cmds.spotLight(n='keyLight'))
         cmds.setAttr('keyLight.translate', -2, 3, 10, type="double3")
@@ -68,26 +59,30 @@ class KB_3PtLightWin(object):
         cmds.setAttr('fillLight.translate', 6, 0, 2, type="double3")
         self.lights.append(cmds.spotLight(n='backLight'))
         cmds.setAttr('backLight.translate', -1, 8, -10, type="double3")
-        self.findLightAngle('keyLight');
-        self.findLightAngle('fillLight');
-        self.findLightAngle('backLight');
+        self.findLightAngle('keyLight')
+        self.findLightAngle('fillLight')
+        self.findLightAngle('backLight')
+
         #flip backlight back towards the origin
-        cmds.select('backLight');
-        cmds.rotate(180, y=1, r=1, os=1);
-        cmds.group('keyLight', 'fillLight', 'backLight', n='Three_Point_Lights');
+        cmds.select('backLight')
+        cmds.rotate(180, y=1, r=1, os=1)
+
+        cmds.group('keyLight', 'fillLight', 'backLight', n='Three_Point_Lights')
 
     def softBtnCmd(self, *args):
+        """Function that softens shadows to a default starting point"""
         for l in self.lights:
-            #cmds.spotLight(l,e=1, penumbra= -5);
             cmds.setAttr('%s.penumbraAngle' % l, 4)
             cmds.setAttr('%s.shadowRays' % l, 4)
             cmds.setAttr('%s.lightRadius' % l, .25)
 
     def shadowsBtnCmd(self, *args):
+        """Function turns on ray trace shadows for lights"""
         for l in self.lights:
             cmds.spotLight(l, e=1, rs=1);
 
     def setIntensityCmd(self, *args):
+        """Function called when Global intensity slider is changed, and updates intensity"""
         intensity = None
         # obtain input as a float
         try:
@@ -103,19 +98,20 @@ class KB_3PtLightWin(object):
             if (l == 'fillLightShape'):
                 adjIntensity = intensity * .6
             elif (l == 'keyLightShape'):
-                adjIntensity = intensity;
+                adjIntensity = intensity
             else:
                 adjIntensity = intensity * .9
-            cmds.spotLight(l, e=1, i=adjIntensity);
+            cmds.spotLight(l, e=1, i=adjIntensity)
 
     def findLightAngle(self, light):
         """Function to find angles to point light to origin"""
-        pivot = cmds.xform('%s' % light, q=1, ws=1, rp=1);
-        rotX = -math.degrees(math.atan(pivot[1] / pivot[2]));
-        rotY = math.degrees(math.atan(pivot[0] / pivot[2]));
-        cmds.setAttr('%s.rotate' % light, rotX, rotY, 0, type="double3");
+        pivot = cmds.xform('%s' % light, q=1, ws=1, rp=1)
+        rotX = -math.degrees(math.atan(pivot[1] / pivot[2]))
+        rotY = math.degrees(math.atan(pivot[0] / pivot[2]))
+        cmds.setAttr('%s.rotate' % light, rotX, rotY, 0, type="double3")
 
     def getSelection(self):
+        """Function to grab and validate current selected node as light root"""
         rootNodes = cmds.ls(sl=True, type='transform')
         if rootNodes is None or len(rootNodes) < 1:
             cmds.confirmDialog(t='Error', b=['OK'],
@@ -125,15 +121,16 @@ class KB_3PtLightWin(object):
             return rootNodes
 
     def saveBtnCmd(self, *args):
-        """Called when the Save Light Setup button is pressed"""
-        print("Save Menu Btn clicked")
+        """Called when the Save Light Setup button is pressed, saves data to file"""
+        print("Save Menu Btn has been clicked")
         cmds.select("Three_Point_Lights")
         rootNodes = self.getSelection()
         if rootNodes is None:
             try:
                 rootNodes = self.getSelection()
             except:
-                return;
+                return
+         #defaults to home directory for the moment
         filePath = ''
         # Maya 2011 and newer use fileDialog2
         try:
@@ -153,7 +150,7 @@ class KB_3PtLightWin(object):
         exportSetup(filePath, cmds.ls(sl=True, type='transform'))
 
     def loadBtnCmd(self, *args):
-        """Called when the Load Light Setup button is pressed"""
+        """Called when the Load Light Setup button is pressed, loads light data from file"""
         filePath = ''
         # Maya 2011 and newer use fileDialog2
         try:
@@ -169,13 +166,19 @@ class KB_3PtLightWin(object):
         if isinstance(filePath, list): filePath = filePath[0]
         importSetup(filePath)
 
+    def helpBtnCmd(self, *args):
+        """for now this Function launches blogpost on website"""
+        print("DEBUG: help pressed")
+        cmds.launch(web='http://nicolaskendallbar.wordpress.com/2014/01/15/quick-3-point-lighting-python-tool/')
+
     def adjustLights(self, *args):
+        """Function that looks through the next light for Camera adjustment"""
         #Look through a light for easy adjustment
         print("adjustLights called\n")
         for l in self.lights:
             if l == self.currentLight:
                 lxform = cmds.listRelatives(l, p=1)
-                print("looking thru: " + lxform[0])
+                print("DEBUG: looking thru: " + lxform[0])
                 cmds.lookThru("modelPanel4", lxform[0],  nc=.001, fc=1000)
         if self.currentLight == "keyLightShape":
             self.currentLight = "fillLightShape"
@@ -185,31 +188,31 @@ class KB_3PtLightWin(object):
             self.currentLight = "keyLightShape"
 
 
-'''The following functions deal with exporting and importing saved Light Setups'''
+#The following functions deal with exporting and importing saved Light Setups
 
 
 def exportSetup(filepath, rootNodes):
     '''Open file and call save func'''
     try:
-        f = open(filepath, 'w');
+        f = open(filepath, 'w')
     except:
-        cmds.confirmDialog(t='Error', b=['OK'], m='Unable to write file: %s' % filepath);
+        cmds.confirmDialog(t='Error', b=['OK'], m='Unable to write file: %s' % filepath)
         raise;
-    data = saveSetup(rootNodes, []);
-    cPickle.dump(data, f);
-    f.close;
+    data = saveSetup(rootNodes, [])
+    cPickle.dump(data, f)
+    f.close
 
 
 def saveSetup(rootNodes, data):
     for node in rootNodes:
-        nodeType = cmds.nodeType(node);
-        keyableAttrs = cmds.listAttr(node, keyable=True);
+        nodeType = cmds.nodeType(node)
+        keyableAttrs = cmds.listAttr(node, keyable=True)
         if keyableAttrs is not None:
             for attr in keyableAttrs:
-                data.append(['%s.%s' % (node, attr), cmds.getAttr('%s.%s' % (node, attr))]);
-        children = cmds.listRelatives(node, children=True);
-        if children is not None: saveSetup(children, data);
-    return data;
+                data.append(['%s.%s' % (node, attr), cmds.getAttr('%s.%s' % (node, attr))])
+        children = cmds.listRelatives(node, children=True)
+        if children is not None: saveSetup(children, data)
+    return data
 
 
 def importSetup(filePath):
@@ -244,5 +247,5 @@ def importSetup(filePath):
 
 #create window when script is run
 win = KB_3PtLightWin(
-    os.path.join(os.getenv('HOME'), '3ptLight.ui'));
-win.create(verbose=True);
+    os.path.join(os.getenv('HOME'), '3ptLight.ui'))
+win.create(verbose=True)
